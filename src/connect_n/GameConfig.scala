@@ -2,8 +2,8 @@ package connect_n
 
 object Player extends Enumeration {
     type Number = Value
-    val First  = Value(0)
-    val Second = Value(1)
+    val One  = Value(0)
+    val Two  = Value(1)
 }
 
 object GameConfig {
