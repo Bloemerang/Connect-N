@@ -1,8 +1,5 @@
-package connectn
+package connect_n
 
-object Main {
-  def main(args: Array[String]): Unit = {
+object Main extends App 
     println("Hello, world!")
-  }
-
 }
