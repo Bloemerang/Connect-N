@@ -2,8 +2,8 @@ package connect_n
 
 object Player extends Enumeration {
     type Number = Value
-    val One  = Value(0)
-    val Two  = Value(1)
+    val One  = Value(1)
+    val Two  = Value(2)
 }
 
 object GameConfig {
@@ -22,9 +22,9 @@ object GameConfig {
 }
 
 final class GameConfig(
-    rows:Int,             // # rows in the game
-    cols:Int,             // # columns in the game
-    n:Int,                // # of consecutive tokens needed to win
-    player:Player.Number, // The player number. Player.First goes first.
-    timeLimit:Int        // The time limit, in seconds, for making a move
+    val rows:Int,             // # rows in the game
+    val cols:Int,             // # columns in the game
+    val n:Int,                // # of consecutive tokens needed to win
+    val player:Player.Number, // The player number. Player.First goes first.
+    val timeLimit:Int        // The time limit, in seconds, for making a move
 )
