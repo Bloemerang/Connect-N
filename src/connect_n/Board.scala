@@ -8,7 +8,7 @@ final object Token extends Enumeration {
     def apply(player:Player.Number):Value = Token(player.id)
 }
 
-final class State(rows:Int, cols:Int) {
+final class Board(rows:Int, cols:Int) {
     require(cols < (java.lang.Long.SIZE / 2))
     val board = new Array[Long](rows)
     val heights = new Array[Int](cols)
@@ -49,5 +49,5 @@ final class State(rows:Int, cols:Int) {
         hr()
 
         buf toString
-    }
-}
+    } // toString()
+} // class Board
