@@ -2,12 +2,12 @@ package connect_n
 
 object Player extends Enumeration {
     type Number = Value
-    val One  = Value(1)
-    val Two  = Value(2)
+    val Max  = Value(1)
+    val Min  = Value(2)
 
     def opposing(other:Number) = other match {
-        case One => Two
-        case Two => One
+        case Max => Min
+        case Min => Max
     }
 }
 

@@ -10,7 +10,7 @@ final object Main {
 
     def main(args:Array[String]) = {
         val board = new Board(6,7)
-        val game = new GameState(3, Player.One)
+        val game = new GameState(3, Player.Max)
 
         def iterate(n:Int):Unit = if (n > 0) {
             var i = 0
@@ -40,12 +40,12 @@ final object Main {
         println(Name) // Announce ourself to the referee
 
         val config = GameConfig(in) // Read the game configuration
-        solver = new Solver(config) // Make the solver
+        solver = new Solver(config, eval) // Make the solver
 
         // Start playing
         config.player match {
-            case Player.Two => gameLoop(input) // Wait for input and then loop
-            case Player.One => {
+            case Player.Max => gameLoop(input) // Wait for input and then loop
+            case Player.Min => {
                 println(solver.move())         // Make the first move
                 gameLoop(input)                // and then loop
             }

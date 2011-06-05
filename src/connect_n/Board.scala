@@ -10,8 +10,10 @@ final object Token extends Enumeration {
 
 final class Board(val rows:Int, val cols:Int) {
     require(cols < (java.lang.Long.SIZE / 2))
-    val board = new Array[Long](rows)
-    val heights = new Array[Int](cols)
+
+    private val board = new Array[Long](rows)
+    private val heights = new Array[Int](cols)
+    private var cellsRemaining = rows*cols
 
     // Just here to verify that board and heights are initialized to zero
     require( (true /: board)   { (l:Boolean, r:Long) => l && (r == 0) })
@@ -25,6 +27,7 @@ final class Board(val rows:Int, val cols:Int) {
 
                 heights(col) -= 1
                 board(heights(col)) &= ~tokenToCol(0x3, col)
+                cellsRemaining += 1
             }
             case _ => {
                 assert( !isFull(col) )
@@ -32,9 +35,12 @@ final class Board(val rows:Int, val cols:Int) {
                         "State corruption: attempt to place a token at an occupied space" )
                 board(heights(col)) |= tokenToCol(token.id, col)
                 heights(col) += 1
+                cellsRemaining -= 1
             }
         }
     }
+
+    def isFull = cellsRemaining == 0
 
     def isFull(col:Int) = {
         assert(col < this.cols)
