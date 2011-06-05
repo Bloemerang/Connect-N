@@ -2,10 +2,10 @@ package connect_n
 
 final class Solver(
     val config:GameConfig,
-    utilityFxn: (Board,GameState) => Int
+    utilityFxn: (Board,GameState) => Option[Int]
 ) {
     private val board = new Board(config.rows, config.cols)
-    private val utilityOf: GameState => Int   = utilityFxn(board,_)
+    private val utilityOf: GameState => Option[Int]   = utilityFxn(board,_)
 
     def move():Int = 0
     def move(i:Int):Int = 0

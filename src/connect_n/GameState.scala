@@ -4,7 +4,6 @@ import collection.immutable.Traversable
 import collection.mutable.Map
 
 final class GameState(val move:Int, val player:Player.Number) {
-    var utility:Int = Integer.MAX_VALUE;
     val children = Map.empty[Int,GameState]
 
     def actions(board:Board):TraversableOnce[GameState] = new Actions(board)
