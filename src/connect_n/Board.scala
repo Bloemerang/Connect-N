@@ -8,7 +8,7 @@ final object Token extends Enumeration {
     def apply(player:Player.Number):Value = Token(player.id)
 }
 
-final class Board(rows:Int, cols:Int) {
+final class Board(val rows:Int, val cols:Int) {
     require(cols < (java.lang.Long.SIZE / 2))
     val board = new Array[Long](rows)
     val heights = new Array[Int](cols)
@@ -17,13 +17,32 @@ final class Board(rows:Int, cols:Int) {
     require( (true /: board)   { (l:Boolean, r:Long) => l && (r == 0) })
     require( (true /: heights) { (l:Boolean, r:Int) => l && (r == 0) })
 
-    def update(col:Int, player:Player.Number) = {
-        assert(col < cols)
-        assert( (board(heights(col)) & (0x3 << (col << 1))) == 0,
-                "State corruption: attempt to place a token at an occupied space" )
-        board(heights(col)) |= (player.id << (col << 1))
-        heights(col) += 1
+    def update(col:Int, token:Token.Value) = {
+        assert(col < this.cols)
+        token match {
+            case Token.None => {
+                assert(heights(col) > 0)
+
+                heights(col) -= 1
+                board(heights(col)) &= ~tokenToCol(0x3, col)
+            }
+            case _ => {
+                assert( !isFull(col) )
+                assert( (board(heights(col)) & tokenToCol(0x3, col)) == 0,
+                        "State corruption: attempt to place a token at an occupied space" )
+                board(heights(col)) |= tokenToCol(token.id, col)
+                heights(col) += 1
+            }
+        }
     }
+
+    def isFull(col:Int) = {
+        assert(col < this.cols)
+
+        heights(col) == this.rows
+    }
+
+    private def tokenToCol(token:Long, col:Int):Long = token << (col << 1)
 
     override def toString = {
         val buf = new StringBuffer()

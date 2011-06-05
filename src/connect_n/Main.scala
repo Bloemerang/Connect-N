@@ -9,16 +9,30 @@ final object Main {
     var solver:Solver = null
 
     def main(args:Array[String]) = {
+        val board = new Board(6,7)
+        val game = new GameState(3, Player.One)
 
-        val board = new State(6,7)
-        println(board)
-        board(3) = Player.One
-        println(board)
-        board(3) = Player.Two
-        println(board)
-        board(4) = Player.One
-        println(board)
-        board(2) = Player.Two
+        def iterate(n:Int):Unit = if (n > 0) {
+            var i = 0
+            for (state <- game.actions(board)) i match {
+                case x if x >= n => {
+                    println("About to return with n=%d, i=%d".format(n,i))
+                    println(board)
+                    return
+                }
+                case _ => {
+                    println("About to iterate with n=%d, i=%d".format(n,i))
+                    println(board)
+                    iterate(n-1)
+                    i += 1
+                }
+            }
+        } else {
+            println("Hit base case with board:")
+            println(board)
+        }
+
+        iterate(3)
         println(board)
 
         exit(0)

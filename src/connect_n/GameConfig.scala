@@ -4,6 +4,11 @@ object Player extends Enumeration {
     type Number = Value
     val One  = Value(1)
     val Two  = Value(2)
+
+    def opposing(other:Number) = other match {
+        case One => Two
+        case Two => One
+    }
 }
 
 object GameConfig {
