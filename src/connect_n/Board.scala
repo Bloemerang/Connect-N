@@ -19,9 +19,11 @@ final class Board(val rows:Int, val cols:Int) {
     require( (true /: board)   { (l:Boolean, r:Long) => l && (r == 0) })
     require( (true /: heights) { (l:Boolean, r:Int) => l && (r == 0) })
 
-    def topRowOf(col:Int) = heights(col-1)
+    def topRowOf(col:Int) = heights(col) - 1
 
     def apply(col:Int, row:Int) = {
+        if (col >= cols || row >= rows)
+            assert(false)
         val shiftAmt = col << 1
         Token(( (board(row) & (0x3 << shiftAmt)) >>> shiftAmt ).toInt)
     }

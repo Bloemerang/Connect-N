@@ -16,8 +16,8 @@ final object Main {
 
         // Start playing
         config.player match {
-            case Player.Max => gameLoop(input) // Wait for input and then loop
-            case Player.Min => {
+            case Player.Min => gameLoop(input) // Wait for input and then loop
+            case Player.Max => {
                 println(solver.move())         // Make the first move
                 gameLoop(input)                // and then loop
             }
@@ -27,7 +27,7 @@ final object Main {
     def gameLoop(input:Int):Unit = input match {
         case i if i >= 0 && i < solver.config.cols => {
             println(solver.move(i))
-            gameLoop(input) // recurse
+            gameLoop(this.input()) // recurse
         }
         case i if i < 0 && i > -4  => onGameEnd(in.readLine())
         case _ => System.err.println("Illegal input from referee")
@@ -35,7 +35,7 @@ final object Main {
 
     def onGameEnd(status:String) = null;
 
-    def input = {
+    def input() = {
         val splitInput = in.readLine().split(" ");
         assert(splitInput.length == 1)
         Integer.parseInt(splitInput(0))

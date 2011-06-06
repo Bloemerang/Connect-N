@@ -1,7 +1,5 @@
 package connect_n
 
-final class Point(val x:Int, val y:Int)
-
 abstract class Threat[ThreatType] protected (val size:Int) {
     type CellType
     
@@ -42,7 +40,7 @@ final class DiagonalThreat(
     }
 
     def contains(cell:CellType) =
-        (cell.y == slope*cell.x + yIntrcpt) && (cell.x >= startX && cell.x < stopX)
+        (cell.row == slope*cell.col + yIntrcpt) && (cell.col >= startX && cell.col < stopX)
 
     def complete = ( size == (stopX - startX) )
 }

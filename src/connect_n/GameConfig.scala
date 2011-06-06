@@ -20,7 +20,7 @@ object GameConfig {
             Integer.parseInt(confValues(0)),
             Integer.parseInt(confValues(1)),
             Integer.parseInt(confValues(2)),
-            Player(Integer.parseInt(confValues(3))),
+            Player(Integer.parseInt(confValues(3))+1),
             Integer.parseInt(confValues(4))
         )
     }
