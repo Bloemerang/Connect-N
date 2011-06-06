@@ -1,14 +1,48 @@
 package connect_n
 
-object Threat {
-    object Cell { def apply(row:Byte, col:Byte) = new Cell(row,col) }
+final class Point(val x:Int, val y:Int)
+
+class Threat[ThreatType] protected (val size:Int) {
+    type CellType
     
-    class Cell(val row:Byte, val col:Byte)
+    def add(cell:CellType):Option[ThreatType]
+    def contains(cell:CellType):Boolean
+    def complete:Boolean
 }
 
-class Threat private (cells:Array[Threat.Cell]) {
-    def this(cell_1:Threat.Cell, cell_2:Threat.Cell, length:Int) = {
-        this(new Array[Threat.Cell](length))
-        // TODO: Stopping point
+final class StraightThreat(
+    start:Int,
+    stop:Int,
+    size:Int
+) extends Threat[StraightThreat](size) {
+    type CellType = Int
+
+    def add(cell:CellType) = contains(cell) match {
+        case true  => Some( new StraightThreat(start, stop, size+1) )
+        case false => None
     }
+
+    def contains(cell:CellType) = ( cell >= start && cell < stop )
+
+    def complete = ( size == (math.abs(stop - start)) )
+}
+
+final class DiagonalThreat(
+    slope:Int,
+    yIntrcpt:Int,
+    startX:Int,
+    stopX:Int,
+    size:Int
+) extends Threat[DiagonalThreat](size) {
+    type CellType = Point
+
+    def add(cell:CellType) = contains(cell) match {
+        case true  => Some( new DiagonalThreat(slope, yIntrcpt, startX, stopX, size+1))
+        case false => None
+    }
+
+    def contains(cell:CellType) =
+        (cell.y == slope*cell.x + yIntrcpt) && (cell.x >= startX && cell.x < stopX)
+
+    def complete = ( size == (stopX - startX) )
 }
