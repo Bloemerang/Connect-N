@@ -2,7 +2,7 @@ package connect_n
 
 final class Point(val x:Int, val y:Int)
 
-class Threat[ThreatType] protected (val size:Int) {
+abstract class Threat[ThreatType] protected (val size:Int) {
     type CellType
     
     def add(cell:CellType):Option[ThreatType]
