@@ -29,25 +29,37 @@ final class Solver(val config:GameConfig) {
         // Search for a good move
         var bestMove:Int = config.cols / 2
         try {
+            var utility = Int.MinValue
             for (i <- 2 to (config.rows * config.cols)) {
-                var utility = Int.MinValue
+                System.err.printf("Going to depth %d\n", i.asInstanceOf[AnyRef])
                 for (state <- currentState.actions(board)) {
                     val minimax = search(state, i)
                     if (minimax > utility) {
                         utility = minimax
+                        val oldBest = bestMove
                         bestMove = state.move
+                        if (oldBest != bestMove)
+                            System.err.printf(
+                                "Best move changed from %d to %d at ply %d\n",
+                                oldBest.asInstanceOf[AnyRef],
+                                bestMove.asInstanceOf[AnyRef],
+                                i.asInstanceOf[AnyRef]
+                            )
                     }
                 }
             }
         } catch {
             case ex:InterruptedException => // Ignore it; just a control flow aid
         }
+
+        System.err.printf("Moving to %d\n", bestMove.asInstanceOf[AnyRef])
         
         // Update state with our move
         currentState = currentState.children.getOrElse(bestMove, new GameState(bestMove, config.player))
         board(bestMove) = Token(config.player)
 
         System.err.println(board)
+        System.err.flush()
 
         return bestMove
     }
@@ -106,7 +118,7 @@ final class Solver(val config:GameConfig) {
         //if (moveCount > 2) return
         new java.util.Timer().schedule(
         new java.util.TimerTask { def run() = Solver.this.stopSearching() },
-        this.config.timeLimit*1000 - 200
+        this.config.timeLimit*1000 - 1000
     )}
 }
 

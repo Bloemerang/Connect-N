@@ -13,7 +13,7 @@ final class GameState(val move:Int, val player:Player.Number) {
             val otherPlayer = Player opposing player
 
             for ( i <- 0 until board.cols; if !board.isFull(i) ) {
-                board(i) = Token(player)
+                board(i) = Token(otherPlayer)
                 try {
                     f(children.getOrElseUpdate(i, new GameState(i, otherPlayer)))
                 } finally {
