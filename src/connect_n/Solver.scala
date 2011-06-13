@@ -58,7 +58,7 @@ final class Solver(val config:GameConfig) {
         currentState = currentState.children.getOrElse(bestMove, new GameState(bestMove, config.player))
         board(bestMove) = Token(config.player)
 
-        System.err.println(board)
+        //System.err.println(board)
         System.err.flush()
 
         return bestMove
@@ -114,8 +114,6 @@ final class Solver(val config:GameConfig) {
     private def stopSearching() = solverThread.interrupt()
 
     private def setTimer():Unit = {
-        //moveCount += 1
-        //if (moveCount > 2) return
         new java.util.Timer().schedule(
         new java.util.TimerTask { def run() = Solver.this.stopSearching() },
         this.config.timeLimit*1000 - 1000

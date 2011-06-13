@@ -19,6 +19,7 @@ final object Main {
             case Player.Min => gameLoop(input) // Wait for input and then loop
             case Player.Max => {
                 println(solver.move())         // Make the first move
+                System.out.flush()
                 gameLoop(input)                // and then loop
             }
         }
@@ -27,6 +28,7 @@ final object Main {
     def gameLoop(input:Int):Unit = input match {
         case i if i >= 0 && i < solver.config.cols => {
             println(solver.move(i))
+            System.out.flush()
             gameLoop(this.input()) // recurse
         }
         case i if i < 0 && i > -4  => onGameEnd(in.readLine())
@@ -39,35 +41,5 @@ final object Main {
         val splitInput = in.readLine().split(" ");
         assert(splitInput.length == 1)
         Integer.parseInt(splitInput(0))
-    }
-
-    def test() = {
-        val board = new Board(6,7)
-        val game = new GameState(3, Player.Max)
-
-        def iterate(n:Int):Unit = if (n > 0) {
-            var i = 0
-            for (state <- game.actions(board)) i match {
-                case x if x >= n => {
-                    println("About to return with n=%d, i=%d".format(n,i))
-                    println(board)
-                    return
-                }
-                case _ => {
-                    println("About to iterate with n=%d, i=%d".format(n,i))
-                    println(board)
-                    iterate(n-1)
-                    i += 1
-                }
-            }
-        } else {
-            println("Hit base case with board:")
-            println(board)
-        }
-
-        iterate(3)
-        println(board)
-
-        exit(0)
     }
 }
